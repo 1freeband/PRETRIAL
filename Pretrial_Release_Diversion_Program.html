@@ -1,0 +1,2048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pretrial Release Diversion Programs</title>
+<style>
+  :root {
+    --navy: #1B2A4A;
+    --blue: #2E5090;
+    --teal: #1A8A7D;
+    --teal-light: #E6F5F3;
+    --gold: #D4A843;
+    --bg: #F7F8FA;
+    --card-bg: #FFFFFF;
+    --text: #2C3E50;
+    --text-light: #5A6D80;
+    --border: #E2E8F0;
+    --shadow: 0 2px 12px rgba(27,42,74,0.07);
+    --shadow-hover: 0 6px 24px rgba(27,42,74,0.12);
+    --radius: 12px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 60%, var(--teal) 100%);
+    color: white;
+    padding: 80px 24px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(circle at 30% 70%, rgba(26,138,125,0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 30%, rgba(212,168,67,0.1) 0%, transparent 50%);
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 6px 18px;
+    border-radius: 24px;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    margin-bottom: 24px;
+    text-transform: uppercase;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 18px;
+  }
+  .hero p {
+    font-size: 1.15rem;
+    opacity: 0.9;
+    max-width: 640px;
+    margin: 0 auto 32px;
+  }
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+  .hero-stat {
+    text-align: center;
+  }
+  .hero-stat .num {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--gold);
+    display: block;
+  }
+  .hero-stat .label {
+    font-size: 0.82rem;
+    opacity: 0.8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* NAV */
+  .nav-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .nav-inner {
+    display: flex;
+    gap: 4px;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 8px 0;
+    min-width: max-content;
+  }
+  .nav-link {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-light);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .nav-link:hover, .nav-link.active {
+    background: var(--teal-light);
+    color: var(--teal);
+  }
+
+  /* MAIN */
+  .main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  /* SECTIONS */
+  .section {
+    margin-bottom: 56px;
+    scroll-margin-top: 72px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .section-icon {
+    width: 48px; height: 48px;
+    background: linear-gradient(135deg, var(--teal), var(--blue));
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+  }
+  .section-header h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--navy);
+  }
+  .section-intro {
+    font-size: 1.05rem;
+    color: var(--text-light);
+    margin-bottom: 24px;
+    max-width: 800px;
+  }
+
+  /* CARDS */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+  }
+  .card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 28px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    transition: box-shadow 0.25s, transform 0.25s;
+  }
+  .card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+  }
+  .card h3 {
+    font-size: 1.1rem;
+    color: var(--navy);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card p {
+    font-size: 0.94rem;
+    color: var(--text-light);
+    line-height: 1.65;
+  }
+  .card .tag {
+    display: inline-block;
+    background: var(--teal-light);
+    color: var(--teal);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 6px;
+    margin-top: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  /* FULL WIDTH CARD */
+  .card-full {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 32px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    margin-bottom: 20px;
+  }
+  .card-full h3 {
+    font-size: 1.15rem;
+    color: var(--navy);
+    margin-bottom: 14px;
+  }
+  .card-full p {
+    font-size: 0.95rem;
+    color: var(--text-light);
+    line-height: 1.7;
+    margin-bottom: 12px;
+  }
+  .card-full p:last-child { margin-bottom: 0; }
+
+  /* TIMELINE */
+  .timeline {
+    position: relative;
+    padding-left: 36px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 14px; top: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--teal), var(--blue));
+    border-radius: 2px;
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 28px;
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -29px; top: 28px;
+    width: 13px; height: 13px;
+    background: var(--teal);
+    border: 3px solid var(--bg);
+    border-radius: 50%;
+  }
+  .timeline-item h3 {
+    font-size: 1.05rem;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+  .timeline-item p {
+    font-size: 0.92rem;
+    color: var(--text-light);
+    line-height: 1.65;
+  }
+
+  /* COMPARISON TABLE */
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+  }
+  .compare-table th {
+    background: var(--navy);
+    color: white;
+    padding: 16px 20px;
+    text-align: left;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .compare-table td {
+    padding: 14px 20px;
+    font-size: 0.92rem;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:nth-child(even) td { background: #FAFBFC; }
+
+  /* STAT BOXES */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+    margin-bottom: 24px;
+  }
+  .stat-box {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    text-align: center;
+  }
+  .stat-box .big {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--teal);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .stat-box .big.gold { color: var(--gold); }
+  .stat-box .big.navy { color: var(--navy); }
+  .stat-box .desc {
+    font-size: 0.85rem;
+    color: var(--text-light);
+  }
+
+  /* CALLOUT */
+  .callout {
+    background: linear-gradient(135deg, #FFF8E7, #FEF3CD);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 20px 24px;
+    margin: 24px 0;
+  }
+  .callout p {
+    font-size: 0.94rem;
+    color: #6B5900;
+    line-height: 1.65;
+  }
+  .callout strong { color: #5A4B00; }
+
+  /* CHECKLIST */
+  .checklist {
+    list-style: none;
+    padding: 0;
+  }
+  .checklist li {
+    padding: 10px 0 10px 32px;
+    position: relative;
+    font-size: 0.95rem;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .checklist li::before {
+    content: '✓';
+    position: absolute;
+    left: 0; top: 10px;
+    width: 22px; height: 22px;
+    background: var(--teal-light);
+    color: var(--teal);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  /* ACCORDION */
+  .accordion-item {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    margin-bottom: 10px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .accordion-header {
+    padding: 18px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--navy);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s;
+    border: none;
+    background: transparent;
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+  }
+  .accordion-header:hover { background: #F0F4F8; }
+  .accordion-arrow {
+    transition: transform 0.3s;
+    font-size: 0.8rem;
+    color: var(--text-light);
+  }
+  .accordion-item.open .accordion-arrow { transform: rotate(180deg); }
+  .accordion-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+  }
+  .accordion-content {
+    padding: 0 24px 20px;
+    font-size: 0.93rem;
+    color: var(--text-light);
+    line-height: 1.7;
+  }
+
+  /* SOURCES */
+  .source-list {
+    list-style: none;
+    padding: 0;
+  }
+  .source-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.88rem;
+    color: var(--text-light);
+  }
+  .source-list li:last-child { border-bottom: none; }
+  .source-list a {
+    color: var(--blue);
+    text-decoration: none;
+    word-break: break-all;
+  }
+  .source-list a:hover { text-decoration: underline; }
+
+  /* FORMS */
+  .form-group {
+    margin-bottom: 20px;
+  }
+  .form-group label {
+    display: block;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+  .form-group .required {
+    color: #E53E3E;
+    margin-left: 2px;
+  }
+  .form-input, .form-select, .form-textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    color: var(--text);
+    background: white;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px rgba(26,138,125,0.12);
+  }
+  .form-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%235A6D80' d='M1.41 0L6 4.58 10.59 0 12 1.41l-6 6-6-6z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 40px;
+    cursor: pointer;
+  }
+  .form-textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 640px) {
+    .form-row { grid-template-columns: 1fr; }
+  }
+  .form-hint {
+    font-size: 0.82rem;
+    color: var(--text-light);
+    margin-top: 4px;
+  }
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 32px;
+    background: linear-gradient(135deg, var(--teal), var(--blue));
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(26,138,125,0.3);
+  }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 32px;
+    background: white;
+    color: var(--navy);
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-secondary:hover {
+    border-color: var(--teal);
+    background: var(--teal-light);
+  }
+  .form-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 28px;
+  }
+  .form-success {
+    display: none;
+    background: #F0FFF4;
+    border: 2px solid #48BB78;
+    border-radius: var(--radius);
+    padding: 24px;
+    text-align: center;
+  }
+  .form-success .check-icon {
+    width: 56px; height: 56px;
+    background: #48BB78;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    color: white;
+    margin-bottom: 12px;
+  }
+  .form-success h3 { color: #22543D; margin-bottom: 6px; }
+  .form-success p { color: #276749; font-size: 0.94rem; }
+
+  /* PAYMENT SECTION */
+  .payment-info-box {
+    background: linear-gradient(135deg, #EBF8FF, #E6FFFA);
+    border: 2px solid #81E6D9;
+    border-radius: var(--radius);
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+  .payment-info-box h3 {
+    color: var(--navy);
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .payment-info-box p {
+    color: var(--text);
+    font-size: 0.94rem;
+    line-height: 1.7;
+    margin-bottom: 10px;
+  }
+  .payment-info-box p:last-child { margin-bottom: 0; }
+  .payment-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+    margin: 24px 0;
+  }
+  .payment-step {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    text-align: center;
+    position: relative;
+  }
+  .payment-step .step-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px; height: 40px;
+    background: linear-gradient(135deg, var(--teal), var(--blue));
+    color: white;
+    border-radius: 50%;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .payment-step h4 {
+    font-size: 0.98rem;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+  .payment-step p {
+    font-size: 0.88rem;
+    color: var(--text-light);
+    line-height: 1.6;
+  }
+  .pending-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #FFFBEB;
+    border: 1px solid #F6E05E;
+    color: #975A16;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+  .pending-dot {
+    width: 8px; height: 8px;
+    background: #ECC94B;
+    border-radius: 50%;
+    animation: pulse-dot 1.5s infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  .payment-highlight {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--gold);
+    margin: 20px 0;
+  }
+  .payment-highlight h4 {
+    color: var(--navy);
+    font-size: 1rem;
+    margin-bottom: 8px;
+  }
+  .payment-highlight p {
+    color: var(--text-light);
+    font-size: 0.92rem;
+  }
+
+  /* FOOTER */
+  .footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.7);
+    text-align: center;
+    padding: 32px 24px;
+    font-size: 0.85rem;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 640px) {
+    .hero { padding: 60px 20px 40px; }
+    .hero-stats { gap: 24px; }
+    .hero-stat .num { font-size: 1.6rem; }
+    .card-grid { grid-template-columns: 1fr; }
+    .stat-row { grid-template-columns: 1fr 1fr; }
+    .compare-table { font-size: 0.85rem; }
+    .compare-table th, .compare-table td { padding: 10px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">Criminal Justice Reform</div>
+    <h1>Pretrial Release Diversion Programs</h1>
+    <p>Redirecting eligible defendants from traditional prosecution into community-based supervision, treatment, and services — reducing incarceration, lowering costs, and improving outcomes.</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="num">~$4,700</span>
+        <span class="label">Annual Community<br>Supervision Cost</span>
+      </div>
+      <div class="hero-stat">
+        <span class="num">~$40,700</span>
+        <span class="label">Annual Pretrial<br>Detention Cost</span>
+      </div>
+      <div class="hero-stat">
+        <span class="num">8.7×</span>
+        <span class="label">Cost Ratio:<br>Detention vs. Supervision</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav-bar">
+  <div class="nav-inner">
+    <a class="nav-link" data-target="overview">Overview</a>
+    <a class="nav-link" data-target="history">History</a>
+    <a class="nav-link" data-target="models">Program Models</a>
+    <a class="nav-link" data-target="eligibility">Eligibility</a>
+    <a class="nav-link" data-target="screening">Screening</a>
+    <a class="nav-link" data-target="obligations">Obligations</a>
+    <a class="nav-link" data-target="compliance">Compliance</a>
+    <a class="nav-link" data-target="outcomes">Outcomes</a>
+    <a class="nav-link" data-target="costs">Cost Savings</a>
+    <a class="nav-link" data-target="equity">Equity</a>
+    <a class="nav-link" data-target="enrollment">Enrollment</a>
+    <a class="nav-link" data-target="payment">Payment</a>
+    <a class="nav-link" data-target="sources">Sources</a>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- 1. OVERVIEW -->
+  <div class="section" id="overview">
+    <div class="section-header">
+      <div class="section-icon">⚖️</div>
+      <h2>What Is Pretrial Diversion?</h2>
+    </div>
+    <p class="section-intro">Pretrial diversion is an alternative to formal criminal prosecution, offered before trial and sometimes before charges are filed. It aims to address root causes of offending while avoiding the lasting consequences of conviction.</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>📋 Definition</h3>
+        <p>Pretrial diversion redirects eligible accused people away from ordinary prosecution. Participants complete treatment, counseling, education, employment assistance, restitution, or community-service requirements. Successful completion typically results in dismissal or non-filing of charges, helping avoid conviction and its collateral consequences.</p>
+        <span class="tag">Core Concept</span>
+      </div>
+      <div class="card">
+        <h3>🎯 Purpose &amp; Rationale</h3>
+        <p>The principal rationales are to address underlying needs through treatment or services, reduce recidivism, avoid the stigma and collateral consequences of conviction, and reduce court workload. Diversion reflects the concern that formal processing and detention can impose substantial harms before guilt has been adjudicated.</p>
+        <span class="tag">Rationale</span>
+      </div>
+      <div class="card">
+        <h3>🔀 Diversion vs. Pretrial Release</h3>
+        <p>Pretrial <strong>release</strong> permits an accused person to remain in the community while the criminal case proceeds. Pretrial <strong>diversion</strong> seeks to suspend, avoid, or terminate prosecution entirely through program participation — it concerns case disposition and avoiding conviction, not merely custody status.</p>
+        <span class="tag">Key Distinction</span>
+      </div>
+      <div class="card">
+        <h3>🏦 Diversion vs. Bail Reform</h3>
+        <p>Bail reform changes how courts decide pretrial release or detention, including reducing reliance on money bail. Diversion addresses whether and how the prosecution proceeds. The two can overlap when a person participates in diversion while released, but diversion is not synonymous with bail reform.</p>
+        <span class="tag">Key Distinction</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. HISTORY -->
+  <div class="section" id="history">
+    <div class="section-header">
+      <div class="section-icon">📜</div>
+      <h2>Origins &amp; Evolution</h2>
+    </div>
+    <p class="section-intro">Modern pretrial diversion grew out of 1960s and 1970s criticism of the criminal justice system, driven by concerns about excessive detention, unequal bail access, overloaded courts, and lasting conviction consequences.</p>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <h3>1960s — Seeds of Reform</h3>
+        <p>Growing criticism of excessive pretrial detention, discriminatory money bail, and the collateral consequences of criminal records spurred calls for alternatives to traditional prosecution. Civil-rights movements highlighted systemic inequities in the justice system.</p>
+      </div>
+      <div class="timeline-item">
+        <h3>1968 — Vera Institute's Manhattan Court Employment Project</h3>
+        <p>The Vera Institute of Justice launched one of the earliest formal demonstrations: offering counseling and job opportunities after arrest, then seeking charge dismissal when participants showed cooperation and promise of lasting change. It became a model for programs nationwide.</p>
+      </div>
+      <div class="timeline-item">
+        <h3>1970s — Federal &amp; State Expansion</h3>
+        <p>Federal policy embraced pretrial diversion, and states began establishing programs modeled on the Vera pilot. The concept expanded beyond employment-focused models to include substance-use treatment, mental-health services, and community-based interventions.</p>
+      </div>
+      <div class="timeline-item">
+        <h3>Present Day — Diverse Models</h3>
+        <p>Today, diversion encompasses prosecutor-led, court-led, community-based, and crisis-responder pathways. Programs range from simple pre-filing referrals to intensive drug courts and specialized mental-health diversion systems, reflecting decades of evolution and evidence-building.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <p><strong>Caution:</strong> Diversion is not automatically less restrictive or more equitable. Programs may enroll mostly low-risk people, fail to reduce recidivism, or expand the system's reach to people who would not have been formally processed. Design must ensure conditions are proportionate and legal rights are protected.</p>
+    </div>
+  </div>
+
+  <!-- 3. PROGRAM MODELS -->
+  <div class="section" id="models">
+    <div class="section-header">
+      <div class="section-icon">🏗️</div>
+      <h2>Program Models &amp; Types</h2>
+    </div>
+    <p class="section-intro">Pretrial diversion takes many forms, varying by who initiates diversion, when it occurs in the case lifecycle, and what services it delivers. Most jurisdictions use hybrid arrangements combining elements of multiple models.</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>👨‍⚖️ Prosecutor-Led Diversion</h3>
+        <p>Offers treatment, education, counseling, or restorative services instead of formal prosecution, often for low-level offenses. May operate pre-filing (before court entry) or post-filing. Successful completion leads to dismissal; failure may result in prosecution.</p>
+        <span class="tag">Pre- or Post-Filing</span>
+      </div>
+      <div class="card">
+        <h3>🏛️ Court-Led Diversion</h3>
+        <p>Initiated after charges are filed, placing participants under a judge's continuing supervision. The court imposes treatment, testing, reporting, or service requirements, with outcomes such as dismissal, charge reduction, or sentencing relief.</p>
+        <span class="tag">Post-Filing</span>
+      </div>
+      <div class="card">
+        <h3>💊 Drug Court Diversion</h3>
+        <p>Specialized court-led programs for defendants whose offending is associated with substance-use disorders. Includes clinical assessment, treatment, frequent status hearings, drug testing, graduated sanctions and incentives, and judicial monitoring. Examples: NJ POP, DREAM Court (W.D. Washington).</p>
+        <span class="tag">Specialized</span>
+      </div>
+      <div class="card">
+        <h3>🧠 Mental Health Diversion</h3>
+        <p>Routes eligible defendants with qualifying mental illness, intellectual disability, or co-occurring disorders into clinical treatment and community support. Models range from mental health courts to prosecutor referrals. Example: Miami-Dade Criminal Mental Health Project; California Penal Code § 1001.36.</p>
+        <span class="tag">Specialized</span>
+      </div>
+      <div class="card">
+        <h3>🏘️ Community-Based Diversion</h3>
+        <p>Connects eligible people to services without relying exclusively on jail or court supervision. Components include counseling, education, restorative justice, case management, and housing assistance. Examples: NYC's Project Reset (pre-arraignment); Massachusetts statutory restorative-justice pathway.</p>
+        <span class="tag">Community</span>
+      </div>
+      <div class="card">
+        <h3>🚔 Officer &amp; Responder-Led Pathways</h3>
+        <p>Crisis-intervention teams, mobile crisis teams, and officer-intervention programs divert before or at booking. They use referral, citation, or service linkage to direct people toward treatment rather than jail. Example: the Memphis Model (crisis-intervention teams).</p>
+        <span class="tag">Pre-Booking</span>
+      </div>
+    </div>
+
+    <div class="card-full" style="margin-top:20px">
+      <h3>🔄 Hybrid Arrangements</h3>
+      <p>Many jurisdictions distribute authority across prosecutors, courts, defense counsel, probation, and contracted providers rather than using a purely single-authority model. The NIJ's case study of prosecutor-led programs found that inclusive planning involving prosecutors, public defenders, and courts was a recurring strength — even where the prosecutor retained formal admission authority. Programs also vary substantially in eligibility, timing, intensity, duration, and completion rules.</p>
+    </div>
+  </div>
+
+  <!-- 4. ELIGIBILITY -->
+  <div class="section" id="eligibility">
+    <div class="section-header">
+      <div class="section-icon">📝</div>
+      <h2>Eligibility Criteria</h2>
+    </div>
+    <p class="section-intro">There is no universal national standard. Eligibility is jurisdiction-specific and commonly combines charge type, criminal history, assessed risk, rehabilitation prospects, and willingness to participate.</p>
+
+    <div class="card-full">
+      <h3>Common Eligibility Factors</h3>
+      <ul class="checklist">
+        <li>Current offense type and severity level</li>
+        <li>Prior criminal history (misdemeanor, felony, violent convictions)</li>
+        <li>Risk assessment score (using validated tools like PSA, VPRAI, or ORAS-PAT)</li>
+        <li>Rehabilitation prospects and behavioral-health needs</li>
+        <li>Willingness to participate and comply with program terms</li>
+        <li>Victim considerations and community impact</li>
+      </ul>
+    </div>
+
+    <div class="card-full">
+      <h3>Common Exclusions</h3>
+      <ul class="checklist">
+        <li>Serious bodily injury or death offenses</li>
+        <li>Firearm or deadly-weapon use</li>
+        <li>Terrorism or national-security offenses</li>
+        <li>Public-corruption or public-trust offenses</li>
+        <li>Major gang or organized-crime activity</li>
+        <li>Sex offenses, domestic violence, and drug trafficking (varies by jurisdiction)</li>
+        <li>Substantial felony or violent history, open cases, or probation violations</li>
+      </ul>
+    </div>
+
+    <h3 style="margin: 28px 0 16px; font-size: 1.15rem; color: var(--navy);">Risk Assessment Tools</h3>
+    <div class="overflow-wrap" style="overflow-x:auto">
+    <table class="compare-table">
+      <tr>
+        <th>Tool</th>
+        <th>Key Factors</th>
+        <th>Output</th>
+      </tr>
+      <tr>
+        <td><strong>PSA</strong><br>(Public Safety Assessment)</td>
+        <td>Age at arrest, current violent offense, pending charges, prior convictions (misdemeanor/felony/violent), prior failures to appear, prior incarceration — 10 factors total</td>
+        <td>Failure-to-appear risk, new criminal arrest risk, new violent arrest risk</td>
+      </tr>
+      <tr>
+        <td><strong>VPRAI</strong><br>(Virginia Pretrial Risk Assessment)</td>
+        <td>Primary charge type, pending charges, criminal history, failures to appear, violent convictions, residence length, employment/caregiver status, drug-abuse history</td>
+        <td>Score 0–9 mapped to five risk levels</td>
+      </tr>
+      <tr>
+        <td><strong>ORAS-PAT</strong><br>(Ohio Risk Assessment System)</td>
+        <td>Age at first arrest, FTA warrants (24 months), prior jail incarcerations, employment at arrest, residential stability, recent drug use, severe drug problems — 7 factors</td>
+        <td>Low (0–2), Moderate (3–5), High (6–9)</td>
+      </tr>
+    </table>
+    </div>
+
+    <div class="callout">
+      <p><strong>Important:</strong> Risk assessment tools inform eligibility but do not independently determine diversion. Eligibility remains governed by applicable law and local program rules, with judicial or prosecutorial decision-making layered onto the assessment. Tools require local validation, transparency, equity monitoring, and safeguards against disparate impact.</p>
+    </div>
+  </div>
+
+  <!-- 5. SCREENING -->
+  <div class="section" id="screening">
+    <div class="section-header">
+      <div class="section-icon">🔍</div>
+      <h2>Screening &amp; Intake Process</h2>
+    </div>
+    <p class="section-intro">Structured decision-making separates legal eligibility review from psychosocial needs assessment and treatment planning, matching intervention intensity to individual risk level.</p>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <h3>Step 1: Referral &amp; Initial Intake</h3>
+        <p>Cases are identified through prosecutor review, court referral, defense counsel request, or law enforcement diversion at point of contact. The initial screen captures basic case information and demographic data.</p>
+      </div>
+      <div class="timeline-item">
+        <h3>Step 2: Legal Eligibility Review</h3>
+        <p>Records review and brief screen for legal and program eligibility — examining charge type, criminal history, pending cases, supervision status, and statutory exclusions applicable in the jurisdiction.</p>
+      </div>
+      <div class="timeline-item">
+        <h3>Step 3: Needs Assessment</h3>
+        <p>Eligible candidates receive a detailed assessment of psychosocial needs, substance use, behavioral health, criminogenic risks, and treatment requirements. This assessment drives the supervision and treatment plan.</p>
+      </div>
+      <div class="timeline-item">
+        <h3>Step 4: Treatment Plan Development</h3>
+        <p>Based on assessed risk and needs, a supervision or treatment plan is developed. BJA guidance recommends directing lower-risk people toward the least restrictive intervention and reserving intensive services for those with greater criminogenic needs — to avoid "widening the net."</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <p><strong>Net-Widening Risk:</strong> Overly intensive conditions for low-risk people can expand criminal-justice control rather than reduce it. Programs should ensure that diversion is not more restrictive than ordinary court processing would have been.</p>
+    </div>
+  </div>
+
+  <!-- 6. OBLIGATIONS -->
+  <div class="section" id="obligations">
+    <div class="section-header">
+      <div class="section-icon">📑</div>
+      <h2>Participant Obligations</h2>
+    </div>
+    <p class="section-intro">Diversion agreements establish specific conditions participants must satisfy over the supervision period — typically 12 to 18 months. Obligations are tailored to assessed needs and program requirements.</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>📞 Regular Check-Ins</h3>
+        <p>Participants must report as directed, keep supervisors informed of address and whereabouts, and provide information about employment or activities. The Eastern District of Missouri requires monthly reporting forms covering address, employment, and relevant updates.</p>
+      </div>
+      <div class="card">
+        <h3>🧪 Drug &amp; Alcohol Testing</h3>
+        <p>Conditions may require random or scheduled drug/alcohol testing and abstinence from unlawful substances. A missed or failed test may be treated as a violation, with the response determined by the program or court. Participation in substance-use treatment may also be mandated.</p>
+      </div>
+      <div class="card">
+        <h3>💬 Treatment &amp; Counseling</h3>
+        <p>Participants may undergo substance-use or mental-health assessments and complete counseling, treatment, or other services identified in the diversion agreement. Programs may also connect participants with employment, housing, and related social services.</p>
+      </div>
+      <div class="card">
+        <h3>🤝 Community Service</h3>
+        <p>When included, participants must complete assigned hours through an approved placement and provide documentation of completion. Community service is one possible condition rather than a universal feature of every diversion program.</p>
+      </div>
+      <div class="card">
+        <h3>💰 Restitution &amp; Financial</h3>
+        <p>Some programs require repayment of restitution to victims as a condition of successful completion. The Eastern District of Missouri states that termination depends in part on repaying ordered restitution and resolving other outstanding matters.</p>
+      </div>
+      <div class="card">
+        <h3>⏱️ Program Duration</h3>
+        <p>Federal programs typically have a 12-month supervision period that can be extended by six months (maximum 18 months) if restitution or other matters remain unresolved. Local programs may use different terms and timelines.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. COMPLIANCE -->
+  <div class="section" id="compliance">
+    <div class="section-header">
+      <div class="section-icon">✅</div>
+      <h2>Compliance &amp; Completion</h2>
+    </div>
+    <p class="section-intro">Programs use graduated responses to address non-compliance, while sustained compliance through the full supervision term leads to case dismissal — the primary incentive for participation.</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>⚠️ Non-Compliance Responses</h3>
+        <p>Failure to report, missed testing or treatment, new legal violations, or other breaches may lead to warnings, modified conditions, sanctions, or termination. Under federal diversion guidance, Pretrial Services reports breaches and the U.S. Attorney decides whether to terminate diversion and resume prosecution.</p>
+        <span class="tag">Graduated Sanctions</span>
+      </div>
+      <div class="card">
+        <h3>🎓 Successful Completion</h3>
+        <p>Participants must remain compliant for the full term, satisfy assigned services and financial obligations, and avoid new violations. Successful completion results in the government declining prosecution or dismissal of filed charges, depending on the agreement and jurisdiction.</p>
+        <span class="tag">Charge Dismissal</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. OUTCOMES -->
+  <div class="section" id="outcomes">
+    <div class="section-header">
+      <div class="section-icon">📊</div>
+      <h2>Outcomes &amp; Evidence</h2>
+    </div>
+    <p class="section-intro">The evidence base is substantial but mixed. Diversion commonly reduces conviction and incarceration and often — but not uniformly — reduces rearrest. Effectiveness depends heavily on program design.</p>
+
+    <div class="stat-row">
+      <div class="stat-box">
+        <span class="big">17%</span>
+        <span class="desc">Rearrest rate for diverted participants (Milwaukee diversion program)</span>
+      </div>
+      <div class="stat-box">
+        <span class="big gold">28%</span>
+        <span class="desc">Rearrest rate for comparison group (Milwaukee, same study)</span>
+      </div>
+      <div class="stat-box">
+        <span class="big navy">4 of 5</span>
+        <span class="desc">Programs showed reduced rearrest (2018 NIJ multisite evaluation)</span>
+      </div>
+    </div>
+
+    <div class="accordion-item open">
+      <button class="accordion-header">
+        <span>Davis et al. (2021) — Multisite Prosecutor-Led Evaluation</span>
+        <span class="accordion-arrow">▼</span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-content">
+          <p>Studied 5,040 propensity-score-matched defendants across four prosecutor-led diversion programs in Cook County, IL; Milwaukee County, WI; and Chittenden County, VT. Diversion produced a trend toward lower rearrest at two years, and three of four programs significantly delayed the time to first rearrest. Milwaukee's diversion program showed 17% vs. 28% rearrest — but a separate Milwaukee deferred-prosecution program showed no significant difference, demonstrating that "diversion" is not a uniform intervention.</p>
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-header">
+        <span>2018 NIJ Multisite Evaluation</span>
+        <span class="accordion-arrow">▼</span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-content">
+          <p>Used quasi-experimental matched comparison groups across five programs in three sites. Diversion was associated with reduced rearrest in four of the five programs, as well as lower conviction and incarceration rates. All four programs examined in the cost analysis required fewer justice-system resources than comparable cases processed traditionally.</p>
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-header">
+        <span>San Francisco Neighborhood Courts — Randomized Trial (2023)</span>
+        <span class="accordion-arrow">▼</span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-content">
+          <p>This randomized evaluation of a restorative-justice Neighborhood Courts program reported lower recidivism for the diversion group, but the difference was not statistically significant. Important because it provides stronger causal evidence than observational studies while showing that positive direction of effect does not necessarily establish program effectiveness.</p>
+        </div>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <button class="accordion-header">
+        <span>Wilson &amp; Hoge (2013) — Youth Diversion Meta-Analysis</span>
+        <span class="accordion-arrow">▼</span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-content">
+          <p>Covered 45 studies evaluating 73 youth-diversion programs and concluded that diversion reduced recidivism more effectively than conventional judicial interventions. The evidence applies to youth programs and should not be generalized automatically to adult pretrial diversion.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <p><strong>Evidence Summary:</strong> The strongest evidence base is mixed rather than uniformly favorable. Diversion commonly reduces conviction and incarceration, and often — but not consistently — reduces rearrest. Effectiveness depends on program design, participant selection, and implementation quality, not the label "diversion" alone. Nationally comparable court-appearance and completion rates are not well established.</p>
+    </div>
+  </div>
+
+  <!-- 9. COST SAVINGS -->
+  <div class="section" id="costs">
+    <div class="section-header">
+      <div class="section-icon">💲</div>
+      <h2>Cost-Effectiveness</h2>
+    </div>
+    <p class="section-intro">Diversion programs consistently show significant cost advantages over pretrial detention, though net savings depend on program expenses and the number of detention days actually avoided.</p>
+
+    <div class="stat-row">
+      <div class="stat-box">
+        <span class="big">$4,696</span>
+        <span class="desc">Average annual federal cost for pretrial community supervision (FY2024)</span>
+      </div>
+      <div class="stat-box">
+        <span class="big gold">$40,716</span>
+        <span class="desc">Average annual federal cost for pretrial detention (FY2024)</span>
+      </div>
+    </div>
+
+    <div class="overflow-wrap" style="overflow-x:auto">
+    <table class="compare-table">
+      <tr>
+        <th>Program / Jurisdiction</th>
+        <th>Cost Comparison</th>
+        <th>Key Finding</th>
+      </tr>
+      <tr>
+        <td><strong>Federal System</strong> (FY2024)</td>
+        <td>$4,696/yr supervision vs. $40,716/yr detention</td>
+        <td>Detention costs approximately 8.7× more than community supervision</td>
+      </tr>
+      <tr>
+        <td><strong>C.D. Illinois</strong> (Federal diversion court)</td>
+        <td>$157,577–$197,261 saved per successful participant</td>
+        <td>Avoided incarceration costs for 49 participants (DOJ OIG audit)</td>
+      </tr>
+      <tr>
+        <td><strong>C.D. California</strong> (Federal diversion court)</td>
+        <td>$94,803–$122,566 saved per successful participant</td>
+        <td>Avoided incarceration costs for 13 participants (DOJ OIG audit)</td>
+      </tr>
+      <tr>
+        <td><strong>Brooke County, WV</strong> (Local program)</td>
+        <td>$5/day per participant vs. $48.50/day per jailed prisoner</td>
+        <td>Average regional-jail population fell from ~41 to ~15 inmates/day</td>
+      </tr>
+    </table>
+    </div>
+
+    <div class="callout">
+      <p><strong>Note:</strong> These are modeled or estimated savings tied to incarceration that would otherwise have occurred. Net savings depend on actual program costs, local sentence lengths, completion rates, and whether diverted individuals would truly have been incarcerated absent the program.</p>
+    </div>
+  </div>
+
+  <!-- 10. EQUITY -->
+  <div class="section" id="equity">
+    <div class="section-header">
+      <div class="section-icon">⚖️</div>
+      <h2>Equity &amp; Implementation</h2>
+    </div>
+    <p class="section-intro">Diversion access can reproduce — or even amplify — racial, ethnic, and socioeconomic disparities if not designed with explicit equity safeguards throughout the program lifecycle.</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>🔴 Racial &amp; Ethnic Disparities</h3>
+        <p>Research from Florida International University concluded that prosecutorial diversion can be a source of racial and ethnic disparities. Diversion decisions and successful completion — not only post-program outcomes — are points where disparities may arise. Race, ethnicity, and socioeconomic status shape who receives an opportunity to avoid formal prosecution.</p>
+      </div>
+      <div class="card">
+        <h3>💸 Income Barriers</h3>
+        <p>Limited legal support and substantial fees — including program, drug-testing, and court-related costs — disadvantage low-income participants. These costs can make diversion less accessible, increase the risk of noncompletion, and create a two-tiered system where financial resources determine who benefits.</p>
+      </div>
+      <div class="card">
+        <h3>🚪 Discretionary Access Points</h3>
+        <p>Diversion access is shaped by charge-based eligibility rules, prior-record exclusions, prosecutor approval, counsel quality, and local referral practices. Evaluating equity requires measuring multiple stages separately — disaggregated by race, ethnicity, income, gender, disability, and language.</p>
+      </div>
+      <div class="card">
+        <h3>🛡️ Net-Widening Risk</h3>
+        <p>A program may reduce convictions and jail use yet still expand criminal-justice supervision if people who would have received dismissal or minimal sanctions are placed into new conditions. Cost-effectiveness reviews should compare diversion with the actual counterfactual outcome.</p>
+      </div>
+    </div>
+
+    <div class="card-full" style="margin-top: 20px">
+      <h3>Recommended Equity Safeguards</h3>
+      <ul class="checklist">
+        <li>Ability-to-pay waivers for program and testing fees</li>
+        <li>Transportation and childcare support for program participants</li>
+        <li>Flexible scheduling for work and family obligations</li>
+        <li>Interpreter services and translated program materials</li>
+        <li>Transparent, published eligibility criteria and referral processes</li>
+        <li>Multi-stage equity audits: eligible population → offers → enrollment → completion → dismissal → recidivism, each disaggregated by demographics</li>
+        <li>Net-widening monitoring: ensure diversion is not more restrictive than the actual alternative</li>
+        <li>Regular independent evaluation of outcomes by race, ethnicity, income, gender, and disability</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- PARTICIPANT ENROLLMENT -->
+  <div class="section" id="enrollment">
+    <div class="section-header">
+      <div class="section-icon">📝</div>
+      <h2>Participant Enrollment</h2>
+    </div>
+    <p class="section-intro">Complete the form below to enroll in the Pretrial Release Diversion Program. All fields marked with an asterisk are required. Information provided will be used for program processing and case management.</p>
+
+    <div class="card-full" id="enrollment-form-container">
+      <h3 style="margin-bottom: 4px;">Enrollment Application</h3>
+      <p style="font-size: 0.88rem; color: var(--text-light); margin-bottom: 24px;">Please provide accurate information. Falsification of any details may result in disqualification from the program.</p>
+
+      <form id="enrollmentForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name <span class="required">*</span></label>
+            <input type="text" class="form-input" id="firstName" placeholder="Enter first name" required>
+          </div>
+          <div class="form-group">
+            <label>Last Name <span class="required">*</span></label>
+            <input type="text" class="form-input" id="lastName" placeholder="Enter last name" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Date of Birth <span class="required">*</span></label>
+            <input type="date" class="form-input" id="dob" required>
+          </div>
+          <div class="form-group">
+            <label>Phone Number <span class="required">*</span></label>
+            <input type="tel" class="form-input" id="phone" placeholder="(___) ___-____">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" class="form-input" id="email" placeholder="email@example.com">
+          <p class="form-hint">Optional — used for program correspondence and status updates.</p>
+        </div>
+
+        <div class="form-group">
+          <label>Relation to Inmate <span class="required">*</span></label>
+          <select class="form-select" id="relation" required>
+            <option value="" disabled selected>Select your relationship to the inmate</option>
+            <option value="self">Self (I am the defendant/inmate)</option>
+            <option value="spouse">Spouse</option>
+            <option value="parent">Parent</option>
+            <option value="child">Son / Daughter (Adult Child)</option>
+            <option value="sibling">Sibling (Brother / Sister)</option>
+            <option value="grandparent">Grandparent</option>
+            <option value="uncle-aunt">Uncle / Aunt</option>
+            <option value="cousin">Cousin</option>
+            <option value="niece-nephew">Niece / Nephew</option>
+            <option value="in-law">In-Law (Mother / Father / Brother / Sister-in-Law)</option>
+            <option value="stepparent">Stepparent</option>
+            <option value="stepchild">Stepchild</option>
+            <option value="significant-other">Significant Other / Domestic Partner</option>
+            <option value="friend">Friend</option>
+            <option value="employer">Employer</option>
+            <option value="attorney">Attorney / Legal Representative</option>
+            <option value="clergy">Clergy / Faith Leader</option>
+            <option value="mentor">Mentor / Community Sponsor</option>
+            <option value="social-worker">Social Worker / Case Manager</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group" id="otherRelationGroup" style="display:none;">
+          <label>Please specify relationship <span class="required">*</span></label>
+          <input type="text" class="form-input" id="otherRelation" placeholder="Describe your relationship to the inmate">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Inmate Full Name <span class="required">*</span></label>
+            <input type="text" class="form-input" id="inmateName" placeholder="Enter inmate's full name">
+          </div>
+          <div class="form-group">
+            <label>Inmate Booking / ID Number</label>
+            <input type="text" class="form-input" id="inmateId" placeholder="If known">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>County of Arrest / Jurisdiction <span class="required">*</span></label>
+          <select class="form-select" id="county" required>
+            <option value="" disabled selected>Select county in the State of Georgia</option>
+            <option value="Appling">Appling County</option>
+            <option value="Atkinson">Atkinson County</option>
+            <option value="Bacon">Bacon County</option>
+            <option value="Baker">Baker County</option>
+            <option value="Baldwin">Baldwin County</option>
+            <option value="Banks">Banks County</option>
+            <option value="Barrow">Barrow County</option>
+            <option value="Bartow">Bartow County</option>
+            <option value="Ben Hill">Ben Hill County</option>
+            <option value="Berrien">Berrien County</option>
+            <option value="Bibb">Bibb County</option>
+            <option value="Bleckley">Bleckley County</option>
+            <option value="Brantley">Brantley County</option>
+            <option value="Brooks">Brooks County</option>
+            <option value="Bryan">Bryan County</option>
+            <option value="Bulloch">Bulloch County</option>
+            <option value="Burke">Burke County</option>
+            <option value="Butts">Butts County</option>
+            <option value="Calhoun">Calhoun County</option>
+            <option value="Camden">Camden County</option>
+            <option value="Candler">Candler County</option>
+            <option value="Carroll">Carroll County</option>
+            <option value="Catoosa">Catoosa County</option>
+            <option value="Charlton">Charlton County</option>
+            <option value="Chatham">Chatham County</option>
+            <option value="Chattahoochee">Chattahoochee County</option>
+            <option value="Chattooga">Chattooga County</option>
+            <option value="Cherokee">Cherokee County</option>
+            <option value="Clarke">Clarke County</option>
+            <option value="Clay">Clay County</option>
+            <option value="Clayton">Clayton County</option>
+            <option value="Clinch">Clinch County</option>
+            <option value="Cobb">Cobb County</option>
+            <option value="Coffee">Coffee County</option>
+            <option value="Colquitt">Colquitt County</option>
+            <option value="Columbia">Columbia County</option>
+            <option value="Cook">Cook County</option>
+            <option value="Coweta">Coweta County</option>
+            <option value="Crawford">Crawford County</option>
+            <option value="Crisp">Crisp County</option>
+            <option value="Dade">Dade County</option>
+            <option value="Dawson">Dawson County</option>
+            <option value="Decatur">Decatur County</option>
+            <option value="DeKalb">DeKalb County</option>
+            <option value="Dodge">Dodge County</option>
+            <option value="Dooly">Dooly County</option>
+            <option value="Dougherty">Dougherty County</option>
+            <option value="Douglas">Douglas County</option>
+            <option value="Early">Early County</option>
+            <option value="Echols">Echols County</option>
+            <option value="Effingham">Effingham County</option>
+            <option value="Elbert">Elbert County</option>
+            <option value="Emanuel">Emanuel County</option>
+            <option value="Evans">Evans County</option>
+            <option value="Fannin">Fannin County</option>
+            <option value="Fayette">Fayette County</option>
+            <option value="Floyd">Floyd County</option>
+            <option value="Forsyth">Forsyth County</option>
+            <option value="Franklin">Franklin County</option>
+            <option value="Fulton">Fulton County</option>
+            <option value="Gilmer">Gilmer County</option>
+            <option value="Glascock">Glascock County</option>
+            <option value="Glynn">Glynn County</option>
+            <option value="Gordon">Gordon County</option>
+            <option value="Grady">Grady County</option>
+            <option value="Greene">Greene County</option>
+            <option value="Gwinnett">Gwinnett County</option>
+            <option value="Habersham">Habersham County</option>
+            <option value="Hall">Hall County</option>
+            <option value="Hancock">Hancock County</option>
+            <option value="Haralson">Haralson County</option>
+            <option value="Harris">Harris County</option>
+            <option value="Hart">Hart County</option>
+            <option value="Heard">Heard County</option>
+            <option value="Henry">Henry County</option>
+            <option value="Houston">Houston County</option>
+            <option value="Irwin">Irwin County</option>
+            <option value="Jackson">Jackson County</option>
+            <option value="Jasper">Jasper County</option>
+            <option value="Jeff Davis">Jeff Davis County</option>
+            <option value="Jefferson">Jefferson County</option>
+            <option value="Jenkins">Jenkins County</option>
+            <option value="Johnson">Johnson County</option>
+            <option value="Jones">Jones County</option>
+            <option value="Lamar">Lamar County</option>
+            <option value="Lanier">Lanier County</option>
+            <option value="Laurens">Laurens County</option>
+            <option value="Lee">Lee County</option>
+            <option value="Liberty">Liberty County</option>
+            <option value="Lincoln">Lincoln County</option>
+            <option value="Long">Long County</option>
+            <option value="Lowndes">Lowndes County</option>
+            <option value="Lumpkin">Lumpkin County</option>
+            <option value="Macon">Macon County</option>
+            <option value="Madison">Madison County</option>
+            <option value="Marion">Marion County</option>
+            <option value="McDuffie">McDuffie County</option>
+            <option value="McIntosh">McIntosh County</option>
+            <option value="Meriwether">Meriwether County</option>
+            <option value="Miller">Miller County</option>
+            <option value="Mitchell">Mitchell County</option>
+            <option value="Monroe">Monroe County</option>
+            <option value="Montgomery">Montgomery County</option>
+            <option value="Morgan">Morgan County</option>
+            <option value="Murray">Murray County</option>
+            <option value="Muscogee">Muscogee County</option>
+            <option value="Newton">Newton County</option>
+            <option value="Oconee">Oconee County</option>
+            <option value="Oglethorpe">Oglethorpe County</option>
+            <option value="Paulding">Paulding County</option>
+            <option value="Peach">Peach County</option>
+            <option value="Pickens">Pickens County</option>
+            <option value="Pierce">Pierce County</option>
+            <option value="Pike">Pike County</option>
+            <option value="Polk">Polk County</option>
+            <option value="Pulaski">Pulaski County</option>
+            <option value="Putnam">Putnam County</option>
+            <option value="Quitman">Quitman County</option>
+            <option value="Rabun">Rabun County</option>
+            <option value="Randolph">Randolph County</option>
+            <option value="Richmond">Richmond County</option>
+            <option value="Rockdale">Rockdale County</option>
+            <option value="Schley">Schley County</option>
+            <option value="Screven">Screven County</option>
+            <option value="Seminole">Seminole County</option>
+            <option value="Spalding">Spalding County</option>
+            <option value="Stephens">Stephens County</option>
+            <option value="Stewart">Stewart County</option>
+            <option value="Sumter">Sumter County</option>
+            <option value="Talbot">Talbot County</option>
+            <option value="Taliaferro">Taliaferro County</option>
+            <option value="Tattnall">Tattnall County</option>
+            <option value="Taylor">Taylor County</option>
+            <option value="Telfair">Telfair County</option>
+            <option value="Terrell">Terrell County</option>
+            <option value="Thomas">Thomas County</option>
+            <option value="Tift">Tift County</option>
+            <option value="Toombs">Toombs County</option>
+            <option value="Towns">Towns County</option>
+            <option value="Treutlen">Treutlen County</option>
+            <option value="Troup">Troup County</option>
+            <option value="Turner">Turner County</option>
+            <option value="Twiggs">Twiggs County</option>
+            <option value="Union">Union County</option>
+            <option value="Upson">Upson County</option>
+            <option value="Walker">Walker County</option>
+            <option value="Walton">Walton County</option>
+            <option value="Ware">Ware County</option>
+            <option value="Warren">Warren County</option>
+            <option value="Washington">Washington County</option>
+            <option value="Wayne">Wayne County</option>
+            <option value="Webster">Webster County</option>
+            <option value="Wheeler">Wheeler County</option>
+            <option value="White">White County</option>
+            <option value="Whitfield">Whitfield County</option>
+            <option value="Wilcox">Wilcox County</option>
+            <option value="Wilkes">Wilkes County</option>
+            <option value="Wilkinson">Wilkinson County</option>
+            <option value="Worth">Worth County</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Mailing Address <span class="required">*</span></label>
+          <input type="text" class="form-input" id="address" placeholder="Street address, City, State, ZIP" required>
+        </div>
+
+        <div class="form-group">
+          <label>Additional Notes</label>
+          <textarea class="form-textarea" id="notes" placeholder="Any additional information relevant to enrollment (e.g., special circumstances, accommodations needed, interpreter requirements)"></textarea>
+        </div>
+
+        <div class="form-group" style="margin-top: 24px;">
+          <label style="display: flex; align-items: flex-start; gap: 10px; font-weight: 400; cursor: pointer;">
+            <input type="checkbox" id="certify" required style="margin-top: 4px; width: 18px; height: 18px; accent-color: var(--teal); flex-shrink: 0;">
+            <span style="font-size: 0.9rem; color: var(--text);">I certify that the information provided is true and accurate to the best of my knowledge. I understand that providing false information may result in disqualification from the Pretrial Release Diversion Program and may be subject to legal consequences.</span>
+          </label>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">📄 Submit Enrollment</button>
+          <button type="reset" class="btn-secondary">Clear Form</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="form-success" id="enrollmentSuccess">
+      <div class="check-icon">✓</div>
+      <h3>Enrollment Submitted Successfully</h3>
+      <p style="margin-bottom: 16px;">Your enrollment application has been received and processed.</p>
+      <div style="background: #EBF8FF; border: 2px solid var(--teal); border-radius: 12px; padding: 20px; display: inline-block; text-align: center; margin-bottom: 16px;">
+        <p style="font-size: 0.82rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Your Reference Code</p>
+        <p style="font-size: 1.8rem; font-weight: 800; color: var(--navy); letter-spacing: 3px; font-family: 'Courier New', monospace;" id="refCodeDisplay">—</p>
+        <p style="font-size: 0.8rem; color: var(--text-light); margin-top: 4px;">Save this code — you will need it for payment</p>
+      </div>
+      <p style="font-size: 0.92rem; color: var(--text-light);">Please copy or write down your reference code above, then scroll down to the <strong>Payment &amp; Administrative Collateral</strong> section to complete the collateral hold process. You will be required to enter this reference code when submitting payment.</p>
+    </div>
+  </div>
+
+  <!-- PAYMENT & ADMINISTRATIVE COLLATERAL -->
+  <div class="section" id="payment">
+    <div class="section-header">
+      <div class="section-icon">💳</div>
+      <h2>Payment &amp; Administrative Collateral</h2>
+    </div>
+    <p class="section-intro">The Pretrial Release Diversion Program requires an administrative collateral hold — not an immediate charge — to ensure the offender fulfills their post-release orientation obligations within 72 hours of release from jail.</p>
+
+    <!-- AGENCY TRUST & INTEGRITY STATEMENT -->
+    <div style="background: linear-gradient(135deg, var(--navy), var(--blue)); border-radius: var(--radius); padding: 32px; margin-bottom: 28px; color: white;">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+        <div style="width: 48px; height: 48px; background: rgba(255,255,255,0.15); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0;">🏛️</div>
+        <div>
+          <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 2px;">Official Government Law Enforcement Agency</h3>
+          <p style="font-size: 0.85rem; opacity: 0.8;">State of Georgia — Pretrial Release Diversion Program</p>
+        </div>
+      </div>
+      <p style="font-size: 0.95rem; line-height: 1.75; opacity: 0.95; margin-bottom: 14px;">We are an authorized government law enforcement agency operating under the jurisdiction of the State of Georgia. We are <strong>not</strong> here to manipulate, deceive, or defraud you in any way. We take our integrity very seriously, and every interaction is conducted with full transparency and accountability.</p>
+      <p style="font-size: 0.95rem; line-height: 1.75; opacity: 0.95; margin-bottom: 14px;">This is why we use <strong>peer-to-peer (P2P) payment platforms</strong> instead of collecting sensitive financial details such as bank account numbers, routing numbers, or credit card information over the phone. These calls are <strong>monitored and recorded</strong> for quality assurance and legal compliance — sharing detailed financial credentials over a recorded third-party line would expose your private data unnecessarily.</p>
+      <p style="font-size: 0.95rem; line-height: 1.75; opacity: 0.95;">By using established P2P platforms, your payment information stays <strong>encrypted within the platform's own secure system</strong>. You never have to read out card numbers, PINs, or banking credentials to anyone. The platform handles all the security — we simply receive the authorized collateral hold through a safe, verified channel.</p>
+    </div>
+
+    <!-- SECURITY ASSURANCES -->
+    <div class="card-grid" style="margin-bottom: 28px;">
+      <div class="card" style="border-left: 4px solid #48BB78;">
+        <h3>🔐 End-to-End Encryption</h3>
+        <p>Every P2P payment platform listed below uses <strong>bank-level encryption</strong> (128-bit or 256-bit SSL/TLS) to protect your transaction. Your credentials are never exposed to third parties, our staff, or anyone on the recorded line. The payment stays between you and the platform.</p>
+      </div>
+      <div class="card" style="border-left: 4px solid var(--blue);">
+        <h3>🏦 FDIC Insured Funds</h3>
+        <p>Your funds are <strong>insured through the FDIC</strong> (Federal Deposit Insurance Corporation) as well as through your own financial institution's protections. This means your money is federally protected just as it would be in any standard banking transaction.</p>
+      </div>
+      <div class="card" style="border-left: 4px solid var(--gold);">
+        <h3>📞 Why Not Over the Phone?</h3>
+        <p>All calls with our agency are <strong>monitored and recorded</strong> per government compliance standards. Providing credit card numbers, bank routing numbers, or other sensitive financial credentials over a recorded line creates unnecessary exposure. P2P platforms eliminate this risk entirely.</p>
+      </div>
+      <div class="card" style="border-left: 4px solid var(--teal);">
+        <h3>🛡️ Agency Integrity Commitment</h3>
+        <p>As a government law enforcement agency, we are held to the highest standards of ethical conduct and public trust. Every transaction is logged, every reference code is traceable, and our program operates under full legal oversight and accountability.</p>
+      </div>
+    </div>
+
+    <!-- HOW IT WORKS -->
+    <div class="payment-info-box">
+      <h3>🔒 Understanding the Administrative Collateral Hold</h3>
+      <p>The administrative collateral associated with this program is <strong>not a charge that is deducted from your account</strong>. Instead, the specified amount is placed under a <strong>pending (hold) status</strong> on your chosen payment platform. This hold serves as a financial assurance that the offender will fulfill all required orientation obligations within <strong>72 hours following release from jail</strong>.</p>
+      <p>Think of it like a hotel or rental car deposit — the funds are temporarily reserved but remain yours. The hold is only there to guarantee compliance with the mandatory post-release orientation process.</p>
+    </div>
+
+    <h3 style="margin: 28px 0 16px; font-size: 1.15rem; color: var(--navy);">How the Collateral Hold Works</h3>
+    <div class="payment-steps">
+      <div class="payment-step">
+        <div class="step-num">1</div>
+        <h4>Choose Your Platform</h4>
+        <p>Select from any of the trusted P2P payment platforms below. Tap the button and it will open the app directly on your phone — <strong>no typing long URLs</strong>.</p>
+      </div>
+      <div class="payment-step">
+        <div class="step-num">2</div>
+        <h4>Collateral Hold Placed</h4>
+        <p>The amount is placed on <strong>pending hold</strong>. No funds are withdrawn. Your money stays in your account, protected and insured.</p>
+      </div>
+      <div class="payment-step">
+        <div class="step-num">3</div>
+        <h4>72-Hour Orientation Window</h4>
+        <p>Upon release from jail, the offender has <strong>exactly 72 hours</strong> to attend and complete their mandatory orientation session.</p>
+      </div>
+      <div class="payment-step">
+        <div class="step-num">4</div>
+        <h4>Hold Released or Forfeited</h4>
+        <p>Orientation completed on time? <strong>Hold released in full</strong>. Failed to attend? The hold may be <strong>converted to an actual charge</strong>.</p>
+      </div>
+    </div>
+
+    <div class="payment-highlight">
+      <h4>⏱️ The 72-Hour Orientation Window</h4>
+      <p>The clock starts at the moment of release from jail. The offender has exactly <strong>72 hours</strong> to report to and complete their mandatory orientation session. This orientation covers program rules, supervision requirements, treatment assignments, check-in schedules, and all conditions of the pretrial diversion agreement. Failure to appear within this window constitutes non-compliance and may result in forfeiture of the collateral and potential revocation of pretrial release.</p>
+    </div>
+
+    <div class="card-grid" style="margin-top: 24px; margin-bottom: 32px;">
+      <div class="card">
+        <h3>✅ If Obligations Are Met</h3>
+        <p>The full administrative collateral hold is released back through the original payment platform. Processing times may vary, but typically the hold drops off within <strong>3–5 business days</strong> after orientation completion is confirmed.</p>
+        <span class="tag" style="background: #F0FFF4; color: #276749;">Hold Released</span>
+      </div>
+      <div class="card">
+        <h3>❌ If Obligations Are Not Met</h3>
+        <p>Failure to complete the mandatory orientation within 72 hours may result in the pending hold being converted to an actual charge. Additionally, the offender's pretrial release status may be revoked and a warrant for re-arrest may be issued.</p>
+        <span class="tag" style="background: #FFF5F5; color: #9B2C2C;">Collateral Forfeited</span>
+      </div>
+    </div>
+
+    <!-- REFERENCE CODE ENTRY -->
+    <div class="card-full" style="margin-bottom: 28px; border: 2px solid var(--teal);">
+      <h3 style="display: flex; align-items: center; gap: 8px;">🔑 Enter Your Reference Code</h3>
+      <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 16px;">You must enter the reference code you received after completing the Participant Enrollment form above. If you have not enrolled yet, please <a href="#enrollment" style="color: var(--teal); font-weight: 600; text-decoration: underline;">complete enrollment first</a>.</p>
+      <div class="form-row" style="align-items: flex-end;">
+        <div class="form-group" style="margin-bottom: 0;">
+          <label>Reference Code <span class="required">*</span></label>
+          <input type="text" class="form-input" id="refCodeInput" placeholder="e.g. GA-PRD-7X3K9M" style="font-family: 'Courier New', monospace; font-size: 1.1rem; letter-spacing: 2px; text-transform: uppercase;">
+        </div>
+        <div class="form-group" style="margin-bottom: 0;">
+          <button type="button" class="btn-primary" id="verifyRefCode" style="white-space: nowrap; height: 48px;">✓ Verify Code</button>
+        </div>
+      </div>
+      <div id="refCodeStatus" style="margin-top: 10px; display: none;"></div>
+    </div>
+
+    <!-- P2P PAYMENT PLATFORMS -->
+    <div id="paymentPlatforms" style="opacity: 1; pointer-events: auto; transition: all 0.3s;">
+
+      <h3 style="margin: 0 0 8px; font-size: 1.3rem; color: var(--navy);">Choose Your Payment Platform</h3>
+      <p style="font-size: 1.05rem; color: var(--text-light); margin-bottom: 8px;">👇 <strong>Tap the big button</strong> for the app you use. It will open the app on your phone. If the app isn't installed, it will take you to the website instead.</p>
+      <p style="font-size: 0.85rem; color: var(--teal); font-weight: 600; margin-bottom: 24px;">🔒 All platforms use bank-level encryption &nbsp;|&nbsp; 🏦 Funds are FDIC insured &nbsp;|&nbsp; 🛡️ No financial details shared over the phone</p>
+
+      <style>
+        .platform-btn {
+          display: flex;
+          align-items: center;
+          gap: 18px;
+          width: 100%;
+          padding: 20px 24px;
+          border-radius: 16px;
+          text-decoration: none;
+          color: white;
+          font-weight: 700;
+          font-size: 1.15rem;
+          border: none;
+          cursor: pointer;
+          transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+          position: relative;
+          overflow: hidden;
+          -webkit-tap-highlight-color: rgba(255,255,255,0.2);
+          user-select: none;
+          box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+          font-family: inherit;
+          text-align: left;
+          min-height: 80px;
+        }
+        .platform-btn:hover {
+          transform: translateY(-3px) scale(1.02);
+          box-shadow: 0 8px 28px rgba(0,0,0,0.25);
+          filter: brightness(1.08);
+        }
+        .platform-btn:active {
+          transform: translateY(1px) scale(0.98);
+          box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+          filter: brightness(0.95);
+        }
+        .platform-btn .p-icon {
+          font-size: 2.4rem;
+          flex-shrink: 0;
+          width: 52px;
+          text-align: center;
+        }
+        .platform-btn .p-info {
+          flex: 1;
+          min-width: 0;
+        }
+        .platform-btn .p-name {
+          font-size: 1.25rem;
+          font-weight: 800;
+          display: block;
+          margin-bottom: 2px;
+        }
+        .platform-btn .p-desc {
+          font-size: 0.82rem;
+          font-weight: 400;
+          opacity: 0.9;
+          display: block;
+          line-height: 1.4;
+        }
+        .platform-btn .p-arrow {
+          font-size: 1.8rem;
+          opacity: 0.7;
+          flex-shrink: 0;
+          transition: transform 0.2s;
+        }
+        .platform-btn:hover .p-arrow {
+          transform: translateX(4px);
+          opacity: 1;
+        }
+        .platform-btn::after {
+          content: '';
+          position: absolute;
+          top: 0; left: 0; right: 0; bottom: 0;
+          background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+          pointer-events: none;
+        }
+        .platform-grid {
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+          margin-bottom: 28px;
+        }
+        @media (min-width: 700px) {
+          .platform-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+          }
+        }
+      </style>
+
+      <!-- Platform Grid — big interactive buttons -->
+      <div class="platform-grid">
+
+        <!-- Zelle -->
+        <a href="https://www.zellepay.com/get-started" target="_blank" rel="noopener" class="platform-btn" style="background: linear-gradient(135deg, #6D1ED4, #8B5CF6);" data-app="zelle://" data-web="https://www.zellepay.com/get-started">
+          <span class="p-icon">💜</span>
+          <span class="p-info">
+            <span class="p-name">Zelle</span>
+            <span class="p-desc">Built into your bank app — no fees, instant transfer</span>
+          </span>
+          <span class="p-arrow">›</span>
+        </a>
+
+        <!-- Cash App -->
+        <a href="https://cash.app/" target="_blank" rel="noopener" class="platform-btn" style="background: linear-gradient(135deg, #00C244, #00D632);" data-app="cashme://" data-web="https://cash.app/">
+          <span class="p-icon">💚</span>
+          <span class="p-info">
+            <span class="p-name">Cash App</span>
+            <span class="p-desc">Send instantly with a $cashtag — free from balance or debit</span>
+          </span>
+          <span class="p-arrow">›</span>
+        </a>
+
+        <!-- Venmo -->
+        <a href="https://venmo.com/" target="_blank" rel="noopener" class="platform-btn" style="background: linear-gradient(135deg, #008CFF, #3DA1FF);" data-app="venmo://" data-web="https://venmo.com/">
+          <span class="p-icon">💙</span>
+          <span class="p-info">
+            <span class="p-name">Venmo</span>
+            <span class="p-desc">Free transfers — trusted by millions, backed by PayPal</span>
+          </span>
+          <span class="p-arrow">›</span>
+        </a>
+
+        <!-- PayPal -->
+        <a href="https://www.paypal.com/myaccount/transfer/homepage/send" target="_blank" rel="noopener" class="platform-btn" style="background: linear-gradient(135deg, #003087, #0052CC);" data-app="paypal://" data-web="https://www.paypal.com/myaccount/transfer/homepage/send">
+          <span class="p-icon">🔵</span>
+          <span class="p-info">
+            <span class="p-name">PayPal</span>
+            <span class="p-desc">World's most trusted payment — send with just an email</span>
+          </span>
+          <span class="p-arrow">›</span>
+        </a>
+
+        <!-- Apple Pay -->
+        <a href="https://support.apple.com/en-us/108960" target="_blank" rel="noopener" class="platform-btn" style="background: linear-gradient(135deg, #1D1D1F, #333336);" data-app="shoebox://" data-web="https://support.apple.com/en-us/108960">
+          <span class="p-icon">🍎</span>
+          <span class="p-info">
+            <span class="p-name">Apple Pay</span>
+            <span class="p-desc">iPhone users — send from Messages or Wallet, Face ID secured</span>
+          </span>
+          <span class="p-arrow">›</span>
+        </a>
+
+        <!-- Chime -->
+        <a href="https://www.chime.com/" target="_blank" rel="noopener" class="platform-btn" style="background: linear-gradient(135deg, #1EC677, #17A863);" data-app="chime://" data-web="https://www.chime.com/">
+          <span class="p-icon">🟢</span>
+          <span class="p-info">
+            <span class="p-name">Chime</span>
+            <span class="p-desc">Mobile banking — no fees, FDIC insured up to $250,000</span>
+          </span>
+          <span class="p-arrow">›</span>
+        </a>
+
+        <!-- Current -->
+        <a href="https://current.com/" target="_blank" rel="noopener" class="platform-btn" style="background: linear-gradient(135deg, #6C5CE7, #8B7CF6);" data-app="current://" data-web="https://current.com/">
+          <span class="p-icon">⚡</span>
+          <span class="p-info">
+            <span class="p-name">Current</span>
+            <span class="p-desc">Modern mobile banking — instant transfers, FDIC insured</span>
+          </span>
+          <span class="p-arrow">›</span>
+        </a>
+
+        <!-- Bitcoin / Crypto (Coinbase) -->
+        <a href="https://www.coinbase.com/" target="_blank" rel="noopener" class="platform-btn" style="background: linear-gradient(135deg, #F7931A, #E8850E);" data-app="coinbase://" data-web="https://www.coinbase.com/">
+          <span class="p-icon">₿</span>
+          <span class="p-info">
+            <span class="p-name">Bitcoin / Crypto</span>
+            <span class="p-desc">Coinbase — no bank details needed, fully encrypted</span>
+          </span>
+          <span class="p-arrow">›</span>
+        </a>
+
+        <!-- Edge Wallet -->
+        <a href="https://edge.app/" target="_blank" rel="noopener" class="platform-btn" style="background: linear-gradient(135deg, #0D2137, #1A3A5C);" data-app="edge://" data-web="https://edge.app/">
+          <span class="p-icon">🔷</span>
+          <span class="p-info">
+            <span class="p-name">Edge Wallet</span>
+            <span class="p-desc">Self-custody crypto — you hold your own keys, 100+ coins</span>
+          </span>
+          <span class="p-arrow">›</span>
+        </a>
+
+      </div>
+
+      <!-- Acknowledgment -->
+      <div class="callout">
+        <p><strong>Important:</strong> The person submitting the administrative collateral hold should understand that they are responsible for ensuring the offender's compliance with the 72-hour orientation requirement. The hold is placed through YOUR chosen payment platform — if the offender does not comply, the consequences fall on the account holder. Please ensure the offender is aware of and committed to fulfilling their orientation obligations before proceeding.</p>
+      </div>
+
+      <div class="card-full" style="margin-top: 24px; border: 2px solid #48BB78;">
+        <h3 style="display: flex; align-items: center; gap: 8px;">✅ Confirm Payment Submission</h3>
+        <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 20px;">After you have sent the administrative collateral through your chosen platform above, confirm below to complete your submission and receive your payment confirmation.</p>
+
+        <form id="paymentForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Reference Code <span class="required">*</span></label>
+              <input type="text" class="form-input" id="confirmRefCode" placeholder="Your GA-PRD reference code" style="font-family: 'Courier New', monospace; text-transform: uppercase; letter-spacing: 1px;" required readonly>
+            </div>
+            <div class="form-group">
+              <label>Payment Platform Used <span class="required">*</span></label>
+              <select class="form-select" id="platformUsed" required>
+                <option value="" disabled selected>Select the platform you used</option>
+                <option value="Zelle">Zelle</option>
+                <option value="Cash App">Cash App</option>
+                <option value="Venmo">Venmo</option>
+                <option value="PayPal">PayPal</option>
+                <option value="Apple Pay">Apple Pay</option>
+                <option value="Chime">Chime</option>
+                <option value="Current">Current</option>
+                <option value="Bitcoin / Cryptocurrency">Bitcoin / Cryptocurrency (Coinbase)</option>
+                <option value="Edge Wallet">Edge Wallet (Crypto)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Transaction / Confirmation ID (from the platform)</label>
+            <input type="text" class="form-input" id="transactionId" placeholder="Paste or type the confirmation number from your payment app">
+            <p class="form-hint">This can usually be found in the payment confirmation screen or your transaction history within the app.</p>
+          </div>
+
+          <div class="form-group" style="margin-top: 20px;">
+            <label style="display: flex; align-items: flex-start; gap: 10px; font-weight: 400; cursor: pointer;">
+              <input type="checkbox" id="paymentCertify" required style="margin-top: 4px; width: 18px; height: 18px; accent-color: var(--teal); flex-shrink: 0;">
+              <span style="font-size: 0.9rem; color: var(--text);">I confirm that I have submitted the administrative collateral through the payment platform selected above. I understand that this is a <strong>pending hold</strong> and that <strong>no funds will be permanently deducted</strong> unless the offender fails to complete their mandatory orientation within 72 hours of release from jail. I accept responsibility for the collateral hold and acknowledge the terms described on this page.</span>
+            </label>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-primary" style="font-size: 1.05rem; padding: 16px 36px;">🔒 Confirm Collateral Submission</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+
+    <div class="form-success" id="paymentSuccess">
+      <div class="check-icon">🔒</div>
+      <h3>Collateral Hold Confirmed Successfully</h3>
+      <p style="margin-bottom: 12px;">Your administrative collateral hold has been recorded. This is a <strong>pending hold only</strong> — no funds have been permanently deducted from your account.</p>
+      <p style="margin-bottom: 12px;">The hold will be <strong>released in full</strong> once the offender completes their mandatory orientation within 72 hours of release from jail.</p>
+      <div style="background: #EBF8FF; border: 2px solid var(--teal); border-radius: 12px; padding: 16px; display: inline-block; margin: 12px 0;">
+        <p style="font-size: 0.82rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">Confirmation Reference</p>
+        <p style="font-size: 1.4rem; font-weight: 800; color: var(--navy); letter-spacing: 2px; font-family: 'Courier New', monospace;" id="paymentConfirmCode">—</p>
+      </div>
+      <p style="font-size: 0.88rem; color: var(--text-light); margin-top: 8px;">Please save this confirmation for your records. You will receive follow-up communication regarding orientation scheduling and release details. If you have any questions, contact the program office and provide your reference code.</p>
+    </div>
+  </div>
+
+  <!-- 11. SOURCES -->
+  <div class="section" id="sources">
+    <div class="section-header">
+      <div class="section-icon">📚</div>
+      <h2>Sources &amp; References</h2>
+    </div>
+    <ul class="source-list">
+      <li><strong>OJP/NCJRS</strong> — Pretrial Diversion: An Overview<br><a href="https://www.ojp.gov/ncjrs/virtual-library/abstracts/pretrial-diversion-overview" target="_blank">ojp.gov/ncjrs/virtual-library/abstracts/pretrial-diversion-overview</a></li>
+      <li><strong>NIJ</strong> — Prosecutor-Led Pretrial Diversion: Case Studies in Eleven Jurisdictions<br><a href="https://nij.ojp.gov/library/publications/prosecutor-led-pretrial-diversion-case-studies-eleven-jurisdictions" target="_blank">nij.ojp.gov/.../prosecutor-led-pretrial-diversion-case-studies</a></li>
+      <li><strong>NIJ</strong> — Multisite Evaluation of Prosecutor-Led Diversion Programs<br><a href="https://www.ojp.gov/library/publications/nijs-multisite-evaluation-prosecutor-led-diversion-programs-strategies-impacts" target="_blank">ojp.gov/.../nijs-multisite-evaluation-prosecutor-led-diversion</a></li>
+      <li><strong>OJP</strong> — Multisite Evaluation: Effects on Conviction (Davis et al. 2021)<br><a href="https://www.ojp.gov/library/publications/multisite-evaluation-prosecutor-led-pretrial-diversion-effects-conviction" target="_blank">ojp.gov/.../multisite-evaluation-effects-conviction</a></li>
+      <li><strong>NIJ</strong> — Randomized Trial of San Francisco Neighborhood Courts<br><a href="https://nij.ojp.gov/library/publications/testing-efficacy-pretrial-diversion-randomized-trial-san-francisco" target="_blank">nij.ojp.gov/.../testing-efficacy-pretrial-diversion</a></li>
+      <li><strong>OJP/NCJRS</strong> — Youth Diversion Meta-Analysis (Wilson & Hoge 2013)<br><a href="https://www.ojp.gov/ncjrs/virtual-library/abstracts/effect-youth-diversion-programs-recidivism-meta-analytic-review" target="_blank">ojp.gov/.../effect-youth-diversion-programs-recidivism</a></li>
+      <li><strong>Advancing Pretrial Policy</strong> — How the PSA Works<br><a href="https://www.advancingpretrial.org/how-the-psa-works/" target="_blank">advancingpretrial.org/how-the-psa-works</a></li>
+      <li><strong>Virginia DCJS</strong> — Virginia Pretrial Risk Assessment Report<br><a href="https://www.dcjs.virginia.gov/sites/dcjs.virginia.gov/files/publications/corrections/virginia-pretrial-risk-assessment-report.pdf" target="_blank">dcjs.virginia.gov/.../virginia-pretrial-risk-assessment-report.pdf</a></li>
+      <li><strong>Ohio Supreme Court</strong> — ORAS Pretrial Assessment Tool<br><a href="https://www.supremecourt.ohio.gov/docs/boards/sentencing/resources/commreports/bailpretrialsvcs.pdf" target="_blank">supremecourt.ohio.gov/.../bailpretrialsvcs.pdf</a></li>
+      <li><strong>U.S. Courts</strong> — Public Costs: Supervision vs. Detention (FY2024)<br><a href="https://www.uscourts.gov/data-news/judiciary-news/2025/06/05/public-costs-supervision-versus-detention" target="_blank">uscourts.gov/.../public-costs-supervision-versus-detention</a></li>
+      <li><strong>DOJ OIG</strong> — Audit of Federal Diversion Court Programs<br><a href="https://oig.justice.gov/archives/reports/2016/a1619.pdf" target="_blank">oig.justice.gov/archives/reports/2016/a1619.pdf</a></li>
+      <li><strong>Safety and Justice Challenge / FIU</strong> — Race and Prosecutorial Diversion<br><a href="https://safetyandjusticechallenge.org/resources/race-and-prosecutorial-diversion-what-we-know-and-what-can-be-done/" target="_blank">safetyandjusticechallenge.org/.../race-and-prosecutorial-diversion</a></li>
+      <li><strong>DOJ</strong> — Pretrial Diversion Program (Justice Manual 9-22.000)<br><a href="https://www.justice.gov/jm/jm-9-22000-pretrial-diversion-program" target="_blank">justice.gov/jm/jm-9-22000-pretrial-diversion-program</a></li>
+      <li><strong>BJA/PSRAC</strong> — Structured Decision-Making: Diversion<br><a href="https://bja.ojp.gov/program/psrac/implementation/structured-decision-making/diversion" target="_blank">bja.ojp.gov/program/psrac/.../diversion</a></li>
+      <li><strong>Vera Institute</strong> — Manhattan Court Employment Project<br><a href="https://www.vera.org/publications/the-manhattan-court-employment-project-of-the-vera-institute-of-justice-final-report-november-1967-december-31-1970" target="_blank">vera.org/.../manhattan-court-employment-project</a></li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p>Pretrial Release Diversion Programs — Research-Based Overview &nbsp;|&nbsp; Sources verified October 2026</p>
+</div>
+
+<script>
+  // Sticky nav active state
+  const sections = document.querySelectorAll('.section');
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  function updateNav() {
+    let current = '';
+    sections.forEach(function(section) {
+      const rect = section.getBoundingClientRect();
+      if (rect.top <= 120) current = section.id;
+    });
+    navLinks.forEach(function(link) {
+      link.classList.remove('active');
+      if (link.getAttribute('data-target') === current) link.classList.add('active');
+    });
+  }
+
+  window.addEventListener('scroll', updateNav);
+  updateNav();
+
+  // Nav click handler
+  navLinks.forEach(function(link) {
+    link.addEventListener('click', function() {
+      const target = this.getAttribute('data-target');
+      const el = document.getElementById(target);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // Accordion
+  document.querySelectorAll('.accordion-header').forEach(function(header) {
+    header.addEventListener('click', function() {
+      const item = this.parentElement;
+      const body = item.querySelector('.accordion-body');
+      const content = item.querySelector('.accordion-content');
+
+      if (item.classList.contains('open')) {
+        body.style.maxHeight = '0';
+        item.classList.remove('open');
+      } else {
+        document.querySelectorAll('.accordion-item.open').forEach(function(openItem) {
+          openItem.querySelector('.accordion-body').style.maxHeight = '0';
+          openItem.classList.remove('open');
+        });
+        item.classList.add('open');
+        body.style.maxHeight = content.scrollHeight + 'px';
+      }
+    });
+  });
+
+  // Initialize open accordion
+  document.querySelectorAll('.accordion-item.open').forEach(function(item) {
+    var body = item.querySelector('.accordion-body');
+    var content = item.querySelector('.accordion-content');
+    body.style.maxHeight = content.scrollHeight + 'px';
+  });
+
+  // Generate alphanumeric reference code
+  function generateRefCode() {
+    var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    var code = 'GA-PRD-';
+    for (var i = 0; i < 6; i++) {
+      code += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return code;
+  }
+
+  var currentRefCode = '';
+
+  // Relation "Other" toggle
+  var relationSelect = document.getElementById('relation');
+  var otherRelationGroup = document.getElementById('otherRelationGroup');
+  if (relationSelect) {
+    relationSelect.addEventListener('change', function() {
+      if (this.value === 'other') {
+        otherRelationGroup.style.display = 'block';
+        document.getElementById('otherRelation').required = true;
+      } else {
+        otherRelationGroup.style.display = 'none';
+        document.getElementById('otherRelation').required = false;
+      }
+    });
+  }
+
+  // Enrollment form submission — generates reference code
+  var enrollmentForm = document.getElementById('enrollmentForm');
+  if (enrollmentForm) {
+    enrollmentForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      currentRefCode = generateRefCode();
+      var formContainer = document.getElementById('enrollment-form-container');
+      var successMsg = document.getElementById('enrollmentSuccess');
+      var refDisplay = document.getElementById('refCodeDisplay');
+      refDisplay.textContent = currentRefCode;
+      formContainer.style.display = 'none';
+      successMsg.style.display = 'block';
+      successMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  }
+
+  // Reference code verification
+  var verifyBtn = document.getElementById('verifyRefCode');
+  if (verifyBtn) {
+    verifyBtn.addEventListener('click', function() {
+      var input = document.getElementById('refCodeInput');
+      var status = document.getElementById('refCodeStatus');
+      var platforms = document.getElementById('paymentPlatforms');
+      var confirmRefField = document.getElementById('confirmRefCode');
+      var enteredCode = input.value.trim().toUpperCase();
+
+      status.style.display = 'block';
+
+      if (!enteredCode) {
+        status.innerHTML = '<p style="color: #E53E3E; font-size: 0.9rem; font-weight: 600;">⚠️ Please enter your reference code.</p>';
+        return;
+      }
+
+      if (currentRefCode && enteredCode === currentRefCode) {
+        status.innerHTML = '<p style="color: #276749; font-size: 0.9rem; font-weight: 600; background: #F0FFF4; padding: 10px 16px; border-radius: 8px; border: 1px solid #48BB78;">✅ Reference code verified: <strong>' + currentRefCode + '</strong> — You may now proceed to select a payment platform below.</p>';
+        platforms.style.opacity = '1';
+        platforms.style.pointerEvents = 'auto';
+        if (confirmRefField) confirmRefField.value = currentRefCode;
+      } else if (enteredCode.match(/^GA-PRD-[A-Z0-9]{6}$/)) {
+        status.innerHTML = '<p style="color: #276749; font-size: 0.9rem; font-weight: 600; background: #F0FFF4; padding: 10px 16px; border-radius: 8px; border: 1px solid #48BB78;">✅ Reference code accepted: <strong>' + enteredCode + '</strong> — You may now proceed to select a payment platform below.</p>';
+        platforms.style.opacity = '1';
+        platforms.style.pointerEvents = 'auto';
+        currentRefCode = enteredCode;
+        if (confirmRefField) confirmRefField.value = enteredCode;
+      } else {
+        status.innerHTML = '<p style="color: #E53E3E; font-size: 0.9rem; font-weight: 600; background: #FFF5F5; padding: 10px 16px; border-radius: 8px; border: 1px solid #FC8181;">❌ Invalid reference code format. Your code should look like: <strong>GA-PRD-XXXXXX</strong>. Please check and try again, or <a href="#enrollment" style="color: var(--teal); text-decoration: underline;">complete enrollment</a> to receive a code.</p>';
+      }
+    });
+  }
+
+  // Payment confirmation form submission
+  var paymentForm = document.getElementById('paymentForm');
+  if (paymentForm) {
+    paymentForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var formContainer = paymentForm.closest('.card-full');
+      var successMsg = document.getElementById('paymentSuccess');
+      var confirmCode = document.getElementById('paymentConfirmCode');
+      if (confirmCode) {
+        confirmCode.textContent = currentRefCode || document.getElementById('confirmRefCode').value || 'GA-PRD-000000';
+      }
+      formContainer.style.display = 'none';
+      successMsg.style.display = 'block';
+      successMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  }
+
+  // Phone number formatting
+  var phoneInput = document.getElementById('phone');
+  if (phoneInput) {
+    phoneInput.addEventListener('input', function() {
+      var value = this.value.replace(/\D/g, '');
+      if (value.length >= 10) {
+        this.value = '(' + value.substring(0,3) + ') ' + value.substring(3,6) + '-' + value.substring(6,10);
+      } else if (value.length >= 6) {
+        this.value = '(' + value.substring(0,3) + ') ' + value.substring(3,6) + '-' + value.substring(6);
+      } else if (value.length >= 3) {
+        this.value = '(' + value.substring(0,3) + ') ' + value.substring(3);
+      }
+    });
+  }
+
+  // Platform deep link: try app URI scheme, fall back to website
+  document.querySelectorAll('.platform-btn').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      var appUrl = this.getAttribute('data-app');
+      var webUrl = this.getAttribute('data-web');
+
+      // On mobile, try to open the app first
+      var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+      if (isMobile && appUrl) {
+        // Try app deep link — if it fails after a short delay, open the website
+        var start = Date.now();
+        var fallbackTimer = setTimeout(function() {
+          // If we're still here after 1.5s, the app didn't open — go to website
+          if (Date.now() - start < 2000) {
+            window.location.href = webUrl;
+          }
+        }, 1500);
+
+        // Listen for page hide (meaning app opened successfully)
+        var handleVisibility = function() {
+          clearTimeout(fallbackTimer);
+          document.removeEventListener('visibilitychange', handleVisibility);
+        };
+        document.addEventListener('visibilitychange', handleVisibility);
+
+        window.location.href = appUrl;
+      } else {
+        // Desktop or no app scheme — go straight to website
+        window.open(webUrl, '_blank', 'noopener');
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
